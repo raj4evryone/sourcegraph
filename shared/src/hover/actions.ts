@@ -363,8 +363,7 @@ export function registerHoverContributions({
                         // logic is implemented in the observable pipe that sets findReferences.url above.
                         {
                             action: 'findReferences',
-                            when:
-                                'findReferences.url && (goToDefinition.showLoading || goToDefinition.url || goToDefinition.error || goToDefinition.notFound)',
+                            when: 'findReferences.url && goToDefinition.url',
                         },
                     ],
                 },
