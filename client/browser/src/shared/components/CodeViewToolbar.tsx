@@ -9,7 +9,7 @@ import { getModeFromPath } from '../../../../../shared/src/languages'
 import { PlatformContextProps } from '../../../../../shared/src/platform/context'
 import { TelemetryProps } from '../../../../../shared/src/telemetry/telemetryService'
 import { toURIWithPath } from '../../../../../shared/src/util/url'
-import { FileInfo } from '../../libs/code_intelligence'
+import { FileInfoWithContents } from '../../libs/code_intelligence/code_views'
 import { fetchCurrentUser, fetchSite } from '../backend/server'
 import { OpenDiffOnSourcegraph } from './OpenDiffOnSourcegraph'
 import { OpenOnSourcegraph } from './OpenOnSourcegraph'
@@ -23,7 +23,7 @@ export interface ButtonProps {
 interface CodeViewToolbarProps
     extends PlatformContextProps<'forceUpdateTooltip'>,
         ExtensionsControllerProps,
-        FileInfo,
+        FileInfoWithContents,
         TelemetryProps,
         ActionNavItemsClassProps {
     onEnabledChange?: (enabled: boolean) => void
@@ -99,11 +99,9 @@ export class CodeViewToolbar extends React.Component<CodeViewToolbarProps, CodeV
                     />
                 )}
 
-                {/*
-                  Use a ternary here because prettier insists on changing parens resulting in this button only being rendered
-                  if the condition after the || is satisfied.
-                 */}
-                {!this.props.baseCommitID && (
+                {// Do not show the "View file on Sourcegraph" button if the repository is private,
+                // but the browser extension is pointing to the public Sourcegraph instance
+                !this.props.baseCommitID && !this.props.privateRepoPublicSourcegraph && (
                     <OpenOnSourcegraph
                         label={`View file`}
                         ariaLabel="View file on Sourcegraph"
