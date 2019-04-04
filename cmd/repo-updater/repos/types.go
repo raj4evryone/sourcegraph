@@ -529,6 +529,16 @@ func (r *Repo) CloneURLs() []string {
 	return urls
 }
 
+// ExternalServiceIDs returns the IDs of the external services this
+// repo belongs to.
+func (r *Repo) ExternalServiceIDs() []int64 {
+	ids := make([]int64, 0, len(r.Sources))
+	for _, src := range r.Sources {
+		ids = append(ids, src.ExternalServiceID())
+	}
+	return ids
+}
+
 // IsDeleted returns true if the repo is deleted.
 func (r *Repo) IsDeleted() bool { return !r.DeletedAt.IsZero() }
 

@@ -280,6 +280,21 @@ func TestRepoLookup_found(t *testing.T) {
 	}
 }
 
+func TestServer_ExcludeRepos(t *testing.T) {
+	type testCase struct {
+		store repos.Store
+		req   protocol.ExcludeReposRequest
+		resp  protocol.ExcludeReposResponse
+		code  int
+	}
+
+	var testCases []testCase
+	testCases = append(testCases, testCase{})
+
+	s := Server{Store: new(repos.FakeStore)}
+
+}
+
 func TestRepoLookup_syncer(t *testing.T) {
 	now := time.Now().UTC()
 	ctx := context.Background()
